@@ -4,6 +4,14 @@
 
 This tool parses unstructured doctors' notes to populate relevant fields in patient records. Additionally, it features a basic testing framework to evaluate the performance of various language model prompts. The testing framework was the main focus of this project. Because LLMs are not deterministic, test driven development is more important than ever. To get the performance and reliability needed for production, testing the prompts and chains hundreds to thousands of times is needed to get an acceptable success rate of 99.99 or greater. This requires parallelizing the testing of multiple different prompts, models and configurations to find the optimal solution for each use case. 
 
+---
+
+### Disclaimer
+
+This repository contains code developed primarily for educational purposes and personal skill development. While the projects showcase the capabilities and potential applications of Large Language Models (LLMs), it is not intended for production use. The code is provided "as-is" and serves as a proof-of-concept to deepen my understanding of LLMs and their associated technologies. Please exercise caution and discretion if choosing to adapt any of this code for other uses.
+
+---
+
 ## Features
 
 - **Data Extraction**: Extracts pertinent patient data from unstructured doctors' notes, structuring them for database insertion.
