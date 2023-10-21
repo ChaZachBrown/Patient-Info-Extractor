@@ -1,0 +1,22 @@
+Date: 2023-09-12
+
+Patient: John Doe
+
+Observations:
+
+John has been experiencing increased levels of fatigue lately. After reviewing his current condition, I have decided to introduce two new medications into his regimen. He will start on Amoxicillin (500mg twice daily) and Metformin (1000mg once daily). It is important to monitor how he responds to these new medications.
+
+I also noticed that John has developed an allergy to peanuts, which is quite common. We need to update his medical records to include this new development.
+
+In addition, John informed me that he has changed his insurance provider to BlueCross BlueShield, with a policy number of BCB1234567. We need to make sure this is reflected in our database to avoid any billing discrepancies.
+
+Furthermore, he has added a new emergency contact to his file. Please update his emergency contact details to include Mike Doe, contact number (123) 456-7890.
+
+Regarding his current medication, he is still continuing with his Levothyroxine for hypertension. No changes there.
+
+Notes for Next Appointment:
+
+Discuss the efficacy of the new medications.
+Consider introducing a fitness regimen to help with his fatigue.
+Prescribing Doctor:
+Dr. A. Smith

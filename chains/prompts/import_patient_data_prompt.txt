@@ -1,0 +1,129 @@
+Given the following patient data (structured) and doctor visit note (unstructured), please parse the doctor visit note and update the patient data in the respective fields.
+For each field you can do the following 3 things:
+1. Add new data.
+2. Remove data.
+Do not duplicate data.
+Do not include the word “New” when include any new data.
+Do not include anything from the Example data section.
+When updating fields that already have data make sure to not change any of the existing text in that field, unless it should be removed. Just add new data.
+Your response should only consist of a json with the following schema:
+{{
+    "PatientID": "string",
+    "FirstName": "string",
+    "LastName": "string",a
+    "DateOfBirth": "string (e.g., YYYY-MM-DD)",
+    "Gender": "string",
+    "Address": "string",
+    "ContactNumber": "string",
+    "Email": "string",
+    "MedicalHistory": "string",
+    "Allergies": "string",
+    "Medications": "string",
+    "InsuranceDetails": {{
+        "provider": "string",
+        "policy_number": "string"
+    }},
+    "EmergencyContact": {{
+        "name": "string",
+        "contact": "string"
+    }}
+}}
+
+________________________________________
+
+
+Here is an example:
+
+
+Example patient data:
+“””
+c76e4e5d-280e-4bf9-960b-eda77c5602b0,John,Doe,1979-09-08,Other,"4254 Alexander Islands Suite 841 Ryanborough, SC 79825",777.571.0770x02352,iallen@yahoo.com,Patient has a history of diabetes. Regular check-ups are advised.,"Patient has severe reactions to shellfish, medical attention required.","Patient is on a course of Levothyroxine for hypertension, expected to continue till 2001-02-04. Multivitamins.","{{'provider': 'Mahoney-Woods', 'policy_number': 'fa1db8c3-20a4-49aa-9507-8e5e9b52ad4d'}}","{{'name': 'Dana Carrillo', 'contact': '0879862463'}}"
+“””
+
+
+Example doctors note:
+“””
+Date: 2023-09-12
+
+Patient: John Doe
+
+Observations:
+
+John has been experiencing increased levels of fatigue lately. After reviewing his current condition, I have decided to introduce two new medications into his regimen. He will start on Amoxicillin (500mg twice daily) and Metformin (1000mg once daily). It is important to monitor how he responds to these new medications. John has stopped taking this daily multivitamins.
+
+I also noticed that John has developed an allergy to peanuts, which is quite common. We need to update his medical records to include this new development.
+
+In addition, John informed me that he has changed his insurance provider to BlueCross BlueShield, with a policy number of BCB1234567. We need to make sure this is reflected in our database to avoid any billing discrepancies.
+
+Furthermore, he has added a new emergency contact to his file. Please update his emergency contact details to include Mike Doe, contact number (123) 456-7890.
+
+Regarding his current medication, he is still continuing with his Levothyroxine for hypertension. No changes there.
+
+Notes for Next Appointment:
+
+Discuss the efficacy of the new medications.
+Consider introducing a fitness regimen to help with his fatigue.
+Prescribing Doctor:
+Dr. A. Smith
+“””
+
+Example response:
+“””
+{{
+    "PatientID": "c76e4e5d-280e-4bf9-960b-eda77c5602b0",
+    "FirstName": "John",
+    "LastName": "Doe",
+    "DateOfBirth": "1979-09-08",
+    "Gender": "Other",
+    "Address": "4254 Alexander Islands Suite 841 Ryanborough, SC 79825",
+    "ContactNumber": "777.571.0770x02352",
+    "Email": "iallen@yahoo.com",
+    "MedicalHistory": "Patient has a history of diabetes. Regular check-ups are advised.",
+    "Allergies": "Patient has severe reactions to shellfish, medical attention required. Allergy to peanuts.",
+    "Medications": "Patient is on a course of Levothyroxine for hypertension, expected to continue till 2001-02-04. Amoxicillin 500mg twice daily, Metformin 1000mg once daily.",
+    "InsuranceDetails": {{
+        "provider": "BlueCross BlueShield",
+        "policy_number": "BCB1234567"
+    }},
+    "EmergencyContact": {{
+        "name": "Mike Doe",
+        "contact": "(123) 456-7890"
+    }}
+}}
+“””
+______________________________________________
+
+The actual data to complete the task on.
+
+Patient Data:
+“””
+8c7ee3e8-ca60-4871-b479-6484891c364e,Karen,Luis,1906-05-11,Female,"PSC 6923, Box 7215 APO AA 49931",223-515-8119x123,goodwintrevor@anderson-gamble.net,Patient has a history of diabetes. Regular check-ups are advised.,"Patient has severe reactions to shellfish, medical attention required.",Patient is currently taking Lisinopril for hyperlipidemia.,"{{'provider': 'Bennett-Williams', 'policy_number': '17ba59b9-0916-4e04-97f7-397bcef4cc62'}}","{{'name': 'Teresa Kennedy', 'contact': '8233800500'}}"
+
+“””
+
+Doctors note:
+“””
+Date: 2023-09-13
+
+Patient: Karen Luis
+
+Observations:
+
+Today, Karen reported experiencing persistent headaches over the last few weeks. After a thorough review, I have decided to add Topiramate (50mg once daily) and Gabapentin (300mg twice daily) to her current medication regimen to manage this condition.
+
+During our discussion, Karen mentioned that she has developed a new allergy to dairy products, which should be noted in her medical record to prevent any adverse reactions in the future.
+
+Karen informed me that there has been a change in her insurance details; the new provider is Patterson-Hayes, with a policy number of PH12345678. It is vital to update this information to prevent any billing issues.
+
+Moreover, she has updated her emergency contact details to include her friend, Nancy Lewis, with a contact number of (456) 789-0123. Please ensure this is reflected in her file for any necessary contact.
+
+Regarding her current medication, she is still on Lisinopril for hyperlipidemia, and this will continue as planned.
+
+Additional Remarks:
+
+Suggest a diet plan to help manage her diabetes more effectively.
+Schedule a follow-up visit in one month to assess the effectiveness of the new medications.
+Prescribing Doctor:
+Dr. B. Wallace
+“””
+{patient_data}

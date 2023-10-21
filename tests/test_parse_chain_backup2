@@ -1,0 +1,182 @@
+import json
+import os
+import unittest
+from collections import defaultdict
+from chains.import_patient_data import parse_data
+
+NUM_TEST_RUNS = 2
+
+
+class TestDataService(unittest.TestCase):
+
+    total_tests = 0
+    total_pass = 0
+    total_fail = 0
+
+    test_logs = defaultdict(lambda: {"fail": 0, "pass": 0, "total": 0, "errors": []})
+    test_methods = ["test_valid_json", "test_keys", "test_values"]
+    original_test_methods = test_methods.copy()
+    current_file_index = 0
+    test_counter = 0
+
+    @classmethod
+    def setUpClass(cls):
+        cls.file_paths = [
+            'C:/Users/Chaza/Documents/Langchain/patientInfo/chains/prompts/import_patient_data_prompt.txt',
+            'C:/Users/Chaza/Documents/Langchain/patientInfo/chains/prompts/import_patient_data_prompt_2.txt'
+        ]
+
+        cls.data_json_list = []
+        cls.data_dict_list = []
+
+        for path in cls.file_paths:
+            for _ in range(NUM_TEST_RUNS):
+                data_json = parse_data(path)
+                cls.data_json_list.append(data_json)
+                cls.data_dict_list.append(json.loads(data_json))
+
+    def setUp(self):
+        self.schema = {
+            "PatientID": "string",
+            "FirstName": "string",
+            "LastName": "string",
+            "DateOfBirth": "string",
+            "Gender": "string",
+            "Address": "string",
+            "ContactNumber": "string",
+            "Email": "string",
+            "MedicalHistory": "string",
+            "Allergies": "string",
+            "Medications": "string",
+            "InsuranceDetails": {
+                "provider": "string",
+                "policy_number": "string"
+            },
+            "EmergencyContact": {
+                "name": "string",
+                "contact": "string"
+            }
+        }
+        self.expected_data = {
+            "PatientID": "8c7ee3e8-ca60-4871-b479-6484891c364e",
+            "FirstName": "Karen",
+            "LastName": "Luis",
+            "DateOfBirth": "1906-05-11",
+            "Gender": "Female",
+            "Address": "PSC 6923, Box 7215 APO AA 49931",
+            "ContactNumber": "223-515-8119x123",
+            "Email": "goodwintrevor@anderson-gamble.net",
+            "MedicalHistory": "Patient has a history of diabetes. Regular check-ups are advised.",
+            "Allergies": "Patient has severe reactions to shellfish, medical attention required. Allergy to dairy products.",
+            "Medications": "Patient is currently taking Lisinopril for hyperlipidemia. Topiramate 50mg once daily, Gabapentin 300mg twice daily.",
+            "InsuranceDetails": {
+                "provider": "Patterson-Hayes",
+                "policy_number": "PH12345678"
+            },
+            "EmergencyContact": {
+                "name": "Nancy Lewis",
+                "contact": "(456) 789-0123"
+            }
+        }
+
+
+    def test_valid_json(self):
+        errors = []
+        fail, pass_, total = 0, 0, 0
+        for i, data_json in enumerate(self.data_json_list):
+            with self.subTest(i=i):
+                try:
+                    json.loads(data_json)
+                    pass_ += 1
+                except Exception as e:
+                    fail += 1
+                    errors.append(str(e))
+                total += 1
+
+        self.__class__.total_fail += fail
+        self.__class__.total_pass += pass_
+        self.__class__.total_tests += total
+        self.__class__.test_logs["test_valid_json"] = {"fail": fail, "pass": pass_, "total": total, "errors": errors}
+
+    def test_keys(self):
+        errors = []
+        fail, pass_, total = 0, 0, 0
+        for i, data_dict in enumerate(self.data_dict_list):
+            with self.subTest(i=i):
+                try:
+                    schema_keys = set(self.schema.keys())
+                    data_keys = set(data_dict.keys())
+                    self.assertEqual(schema_keys, data_keys, "JSON keys do not match schema")
+                    pass_ += 1
+                except Exception as e:
+                    fail += 1
+                    errors.append(str(e))
+                total += 1
+
+        self.__class__.total_fail += fail
+        self.__class__.total_pass += pass_
+        self.__class__.total_tests += total
+        self.__class__.test_logs["test_keys"] = {"fail": fail, "pass": pass_, "total": total, "errors": errors}
+
+    def test_values(self):
+        errors = []
+        fail, pass_, total = 0, 0, 0
+        for i, data_dict in enumerate(self.data_dict_list):
+            with self.subTest(i=i):
+                try:
+                    for key in self.schema:
+                        if isinstance(self.schema[key], dict):
+                            for nested_key in self.schema[key]:
+                                self.assertEqual(data_dict[key][nested_key], self.expected_data[key][nested_key],
+                                                 f"Field {key}.{nested_key} does not match expected value")
+                        else:
+                            self.assertEqual(data_dict[key], self.expected_data[key],
+                                             f"Field {key} does not match expected value")
+                    pass_ += 1
+                except Exception as e:
+                    fail += 1
+                    errors.append(str(e))
+                total += 1
+
+        self.__class__.total_fail += fail
+        self.__class__.total_pass += pass_
+        self.__class__.total_tests += total
+        self.__class__.test_logs["test_values"] = {"fail": fail, "pass": pass_, "total": total, "errors": errors}
+
+    def tearDown(self):
+        self.__class__.test_counter += NUM_TEST_RUNS
+
+        total_tests_per_file = NUM_TEST_RUNS * len(self.original_test_methods)
+        if self.__class__.test_counter % total_tests_per_file == 0:
+            self.log_results()
+            self.reset_counters()
+            self.__class__.current_file_index += 1
+
+    def reset_counters(self):
+        self.__class__.total_tests = 0
+        self.__class__.total_pass = 0
+        self.__class__.total_fail = 0
+        self.__class__.test_logs = defaultdict(lambda: {"fail": 0, "pass": 0, "total": 0, "errors": []})
+
+    def log_results(self):
+        log_dir = "test_logs"
+        os.makedirs(log_dir, exist_ok=True)
+
+        filename = os.path.basename(self.__class__.file_paths[self.__class__.current_file_index])
+        log_output = f"File: {filename}\n\nTotal: failed: {self.__class__.total_fail}, passed: {self.__class__.total_pass}, ran: {self.__class__.total_tests}\n"
+        for test_name, log in self.__class__.test_logs.items():
+            log_output += f"\n{test_name}: failed: {log['fail']}, passed: {log['pass']}, ran: {log['total']}\n"
+            for error in log['errors']:
+                log_output += f"{error}\n____________________________________________________________________________\n"
+
+        sanitized_filename = filename.replace('/', '_').replace(':', '').replace('\\',
+                                                                                 '_')  # Making the filename safe to use in a file name
+        log_file_name = os.path.join(log_dir, f'test_log_{sanitized_filename}.log')
+
+        with open(log_file_name, 'w') as log_file:
+            log_file.write(log_output)
+
+
+if __name__ == '__main__':
+    unittest.main()
+

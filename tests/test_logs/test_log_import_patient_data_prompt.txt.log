@@ -1,0 +1,43 @@
+File: import_patient_data_prompt.txt
+Overall Results: failed: 5, passed: 10, ran: 15
+
+test_keys: failed: 0, passed: 5, ran: 5
+
+test_valid_json: failed: 0, passed: 5, ran: 5
+
+test_values: failed: 5, passed: 0, ran: 5
+'Pati[40 chars]edical attention required. Allergy to peanuts, dairy products.' != 'Pati[40 chars]edical attention required. Dairy products.'
+- Patient has severe reactions to shellfish, medical attention required. Allergy to peanuts, dairy products.
+?                                                                        ^^^^^^^^^^^^^^^^^^^^^
++ Patient has severe reactions to shellfish, medical attention required. Dairy products.
+?                                                                        ^
+ : Field Allergies does not match expected value
+____________________________________________________________________________
+'Pati[40 chars]edical attention required. Allergy to peanuts, dairy products.' != 'Pati[40 chars]edical attention required. Dairy products.'
+- Patient has severe reactions to shellfish, medical attention required. Allergy to peanuts, dairy products.
+?                                                                        ^^^^^^^^^^^^^^^^^^^^^
++ Patient has severe reactions to shellfish, medical attention required. Dairy products.
+?                                                                        ^
+ : Field Allergies does not match expected value
+____________________________________________________________________________
+'Pati[40 chars]edical attention required. Allergy to peanuts, dairy products.' != 'Pati[40 chars]edical attention required. Dairy products.'
+- Patient has severe reactions to shellfish, medical attention required. Allergy to peanuts, dairy products.
+?                                                                        ^^^^^^^^^^^^^^^^^^^^^
++ Patient has severe reactions to shellfish, medical attention required. Dairy products.
+?                                                                        ^
+ : Field Allergies does not match expected value
+____________________________________________________________________________
+'Pati[40 chars]edical attention required. Allergy to peanuts, dairy products.' != 'Pati[40 chars]edical attention required. Dairy products.'
+- Patient has severe reactions to shellfish, medical attention required. Allergy to peanuts, dairy products.
+?                                                                        ^^^^^^^^^^^^^^^^^^^^^
++ Patient has severe reactions to shellfish, medical attention required. Dairy products.
+?                                                                        ^
+ : Field Allergies does not match expected value
+____________________________________________________________________________
+'Pati[40 chars]edical attention required. Allergy to peanuts, dairy products.' != 'Pati[40 chars]edical attention required. Dairy products.'
+- Patient has severe reactions to shellfish, medical attention required. Allergy to peanuts, dairy products.
+?                                                                        ^^^^^^^^^^^^^^^^^^^^^
++ Patient has severe reactions to shellfish, medical attention required. Dairy products.
+?                                                                        ^
+ : Field Allergies does not match expected value
+____________________________________________________________________________
